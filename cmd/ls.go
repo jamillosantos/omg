@@ -20,7 +20,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jamillosantos/omg/external/buf"
+	"github.com/jamillosantos/omg/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -32,13 +32,13 @@ var lsCmd = &cobra.Command{
 	Short: "List all .proto files using `buf`.",
 	Long:  `List all .proto files using 'buf' and its configuration file.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		ls, err := buf.Ls()
+		ls, err := internal.List(&config)
 		if err != nil {
 			panic(err)
 		}
 
 		switch outputTypeFlag {
-		case "plain":
+		case "text":
 			for _, l := range ls {
 				fmt.Println(l)
 			}
@@ -54,5 +54,5 @@ var lsCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(lsCmd)
 
-	lsCmd.Flags().StringVar(&outputTypeFlag, "output-type", "plain", "Defines the output type for the files (DEFAULT plain, json)")
+	lsCmd.Flags().StringVar(&outputTypeFlag, "output-type", "text", "Defines the output type for the files (text, json) (DEFAULT text)")
 }
