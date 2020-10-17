@@ -4,12 +4,17 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/jamillosantos/omg/config"
+
 	"github.com/spf13/cobra"
 
 	"github.com/spf13/viper"
 )
 
-var cfgFile string
+var (
+	cfgFile string
+	verbose bool
+)
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -29,6 +34,7 @@ to quickly create a Cobra application.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	config.Verbose = verbose
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -43,6 +49,7 @@ func init() {
 	// will be global for your application.
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $PWD/omg.yaml)")
+	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "set verbose mode")
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -63,7 +70,7 @@ func initConfig() {
 
 	}
 
-	if err := viper.Unmarshal(&config); err != nil {
+	if err := viper.Unmarshal(&config.Config); err != nil {
 		panic(err)
 	}
 }

@@ -3,13 +3,12 @@ package protodep
 import (
 	"io"
 	"os"
-	"os/exec"
 
 	"github.com/pkg/errors"
 )
 
 func Up() error {
-	cmd := exec.Command("protodep", "up")
+	cmd := Cmd("up")
 
 	stderr, err := cmd.StderrPipe()
 	if err != nil {

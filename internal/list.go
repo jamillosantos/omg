@@ -38,6 +38,7 @@ func List(c *config.OmgConfig) ([]string, error) {
 			return nil, err
 		}
 
+		// Goes through all matches checking for directories that must be explored.
 		for _, m := range matches {
 			stat, err := os.Stat(m)
 			if err != nil {

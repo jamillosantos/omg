@@ -16,8 +16,19 @@ limitations under the License.
 package cmd
 
 import (
+	"bytes"
+	"fmt"
+	"os"
+
+	"github.com/gookit/color"
+	"github.com/jamillosantos/omg/config"
+	"github.com/jamillosantos/omg/external/buf"
+	"github.com/jamillosantos/omg/external/protoc"
+	"github.com/jamillosantos/omg/internal"
 	"github.com/spf13/cobra"
 )
+
+var colorFileName = color.Style{color.Bold, color.White}
 
 // buildCmd represents the build command
 var buildCmd = &cobra.Command{
@@ -30,7 +41,51 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		// fmt.Println("build called")
+		if len(args) == 0 {
+			files, err := internal.List(&config.Config)
+			if err != nil {
+				internal.Fatal(1, "error listing files: ", err)
+			}
+			args = files
+		}
+
+		bufCmd := buf.BuildCmd(&buf.BuildRequest{
+			Source: config.Config.BufSources(),
+		})
+		bufCmd.Stderr = os.Stderr
+		bufStdoutBuffer := bytes.NewBuffer(nil)
+		bufCmd.Stdout = bufStdoutBuffer
+		if err := bufCmd.Start(); err != nil {
+			internal.Fatal(30, "error starting buf: ", err)
+		}
+		if err := bufCmd.Wait(); err != nil {
+			internal.Fatal(50, "buf exec error: ", err)
+		}
+
+		for _, file := range args {
+			fmt.Printf("Processing %s ...\n", colorFileName.Render(file))
+
+			protocCmd := protoc.Run(&config.Config, file)
+			protocCmd.Stderr = os.Stderr
+			protocCmd.Stdout = os.Stdout
+			protocStdin, err := protocCmd.StdinPipe()
+			if err != nil {
+				internal.Fatal(20, "error setting stdin for protoc: ", err)
+			}
+
+			if err := protocCmd.Start(); err != nil {
+				internal.Fatal(40, "error starting protoc: ", err)
+			}
+
+			bufStdoutBuffer.WriteTo(protocStdin)
+
+			protocStdin.Close()
+
+			if err := protocCmd.Wait(); err != nil {
+				internal.Fatal(60, "protoc error: ", err)
+			}
+			fmt.Printf("  %s\n", color.Green.Render("ok"))
+		}
 	},
 }
 

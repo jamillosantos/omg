@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/jamillosantos/omg/config"
 	"github.com/jamillosantos/omg/internal"
 	"github.com/spf13/cobra"
 )
@@ -32,7 +33,7 @@ var lsCmd = &cobra.Command{
 	Short: "List all .proto files using `buf`.",
 	Long:  `List all .proto files using 'buf' and its configuration file.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		ls, err := internal.List(&config)
+		ls, err := internal.List(&config.Config)
 		if err != nil {
 			panic(err)
 		}

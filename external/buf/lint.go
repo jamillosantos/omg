@@ -7,7 +7,7 @@ import (
 )
 
 func Lint(errFormat string) (int, error) {
-	cmd := exec.Command("buf", "check", "lint", "--error-format", errFormat)
+	cmd := Cmd("check", "lint", "--error-format", errFormat)
 
 	stderr, err := cmd.StderrPipe()
 	if err != nil {

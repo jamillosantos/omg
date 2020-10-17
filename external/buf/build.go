@@ -18,10 +18,10 @@ type BuildRequest struct {
 	ErrorFormat         BuildErrorFormat
 	ExcludeImports      bool
 	ExcludeSourceInfo   bool
-	Source              string
+	Source              []string
 }
 
-func Build(req *BuildRequest) (int, error) {
+func BuildCmd(req *BuildRequest) *exec.Cmd {
 	args := []string{"image", "build"}
 
 	if req.AsFileDescriptorSet {
@@ -36,10 +36,17 @@ func Build(req *BuildRequest) (int, error) {
 	if req.ExcludeSourceInfo {
 		args = append(args, "--exclude-source-info")
 	}
+	for _, source := range req.Source {
+		args = append(args, "--source", source)
+	}
 
 	args = append(args, "-o", "-")
 
-	cmd := exec.Command("buf", args...)
+	return Cmd(args...)
+}
+
+func Build(req *BuildRequest) (int, error) {
+	cmd := BuildCmd(req)
 
 	stderr, err := cmd.StderrPipe()
 	if err != nil {

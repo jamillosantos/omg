@@ -5,6 +5,7 @@ go 1.14
 require (
 	github.com/MichaelTJones/walk v0.0.0-20161122175330-4748e29d5718 // indirect
 	github.com/golang-collections/collections v0.0.0-20130729185459-604e922904d3
+	github.com/gookit/color v1.3.1
 	github.com/mgutz/str v1.2.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/pkg/errors v0.8.1
