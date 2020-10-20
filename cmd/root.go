@@ -2,9 +2,12 @@ package cmd
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 
 	"github.com/jamillosantos/omg/config"
+	"github.com/jamillosantos/omg/internal"
+	"gopkg.in/yaml.v2"
 
 	"github.com/spf13/cobra"
 
@@ -19,7 +22,7 @@ var (
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "omg",
-	Short: "A brief description of your application",
+	Short: "A helper for dealing with gRPC code generation",
 	Long: `A longer description that spans multiple lines and likely contains
 examples and usage of using your application. For example:
 
@@ -28,13 +31,29 @@ This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
-	//	Run: func(cmd *cobra.Command, args []string) { },
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		config.Verbose = verbose
+
+		configFile, err := os.Open("omg.yaml")
+		if err != nil {
+			internal.Fatal(1, "error opening omg.yaml: ", err)
+		}
+		defer configFile.Close()
+
+		configData, err := ioutil.ReadAll(configFile)
+		if err != nil {
+			internal.Fatal(2, "error reading config data: ", err)
+		}
+
+		if err := yaml.Unmarshal(configData, &config.Config); err != nil {
+			internal.Fatal(3, "error parsing omg.yaml: ", err)
+		}
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	config.Verbose = verbose
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -44,33 +63,11 @@ func Execute() {
 func init() {
 	cobra.OnInitialize(initConfig)
 
-	// Here you will define your flags and configuration settings.
-	// Cobra supports persistent flags, which, if defined here,
-	// will be global for your application.
-
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $PWD/omg.yaml)")
 	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "set verbose mode")
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		viper.AddConfigPath(".")
-		viper.SetConfigName("omg")
-	}
-
 	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-
-	}
-
-	if err := viper.Unmarshal(&config.Config); err != nil {
-		panic(err)
-	}
 }

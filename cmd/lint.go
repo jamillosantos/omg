@@ -12,7 +12,7 @@ var typeFlag string
 // lintCmd represents the lint command
 var lintCmd = &cobra.Command{
 	Use:   "lint",
-	Short: "A brief description of your command",
+	Short: "Uses buf to run a lint on the configured files",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 

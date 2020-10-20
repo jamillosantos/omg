@@ -1,9 +1,11 @@
 package config
 
 type OmgConfig struct {
-	Src      []string  `yaml:"src"`
-	Includes []string  `yaml:"includes"`
-	Go       *GoOutput `yaml:"go"`
+	Src         []string           `yaml:"src"`
+	Includes    []string           `yaml:"includes"`
+	Go          *GoOutput          `yaml:"go"`
+	GRPCGateway *GRPCGatewayOutput `yaml:"grpc_gateway"`
+	OpenAPIV2   *OpenAPIV2Output   `yaml:"openapiv2"`
 }
 
 var Verbose bool

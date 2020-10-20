@@ -33,7 +33,7 @@ var colorFileName = color.Style{color.Bold, color.White}
 // buildCmd represents the build command
 var buildCmd = &cobra.Command{
 	Use:   "build",
-	Short: "A brief description of your command",
+	Short: "Build the source code according to the configuration",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 

@@ -8,7 +8,7 @@ import (
 // installCmd represents the install command
 var installCmd = &cobra.Command{
 	Use:   "install",
-	Short: "A brief description of your command",
+	Short: "Uses protodep to install all proto dependencies",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 

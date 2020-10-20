@@ -9,6 +9,8 @@ type GoOutput struct {
 	Dir          string   `yaml:"dir"`
 	ImportPrefix string   `yaml:"import_prefix"`
 	Plugins      []string `yaml:"plugins"`
+	Paths        string   `yaml:"paths"`
+	AnnotateCode *bool    `yaml:"annotate_code"`
 }
 
 func (output *GoOutput) BuildArgs() []string {
@@ -20,6 +22,12 @@ func (output *GoOutput) BuildArgs() []string {
 	}
 	if len(output.Plugins) > 0 {
 		opts = append(opts, "plugins="+strings.Join(output.Plugins, ":"))
+	}
+	if output.Paths != "" {
+		opts = append(opts, "paths="+output.Paths)
+	}
+	if output.AnnotateCode != nil {
+		opts = append(opts, "annotate_code="+bool2Str(output.AnnotateCode))
 	}
 	for i, def := range output.Definitions {
 		if i > 0 {

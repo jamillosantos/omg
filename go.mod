@@ -13,4 +13,5 @@ require (
 	github.com/spf13/viper v1.4.0
 	github.com/stormcat24/protodep v0.0.0-20200505140716-b02c9ba62816 // indirect
 	gopkg.in/godo.v2 v2.0.9
+	gopkg.in/yaml.v2 v2.2.8
 )

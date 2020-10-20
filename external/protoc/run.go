@@ -14,6 +14,12 @@ func Run(omgConfig *config.OmgConfig, file string) *exec.Cmd {
 	if omgConfig.Go != nil {
 		args = append(args, omgConfig.Go.BuildArgs()...)
 	}
+	if omgConfig.GRPCGateway != nil {
+		args = append(args, omgConfig.GRPCGateway.BuildArgs()...)
+	}
+	if omgConfig.OpenAPIV2 != nil {
+		args = append(args, omgConfig.OpenAPIV2.BuildArgs()...)
+	}
 	args = append(args, "--descriptor_set_in=/dev/stdin", file)
 	return Cmd(args...)
 }
