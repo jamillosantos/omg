@@ -8,8 +8,13 @@ type OmgConfig struct {
 	OpenAPIV2   *OpenAPIV2Output   `yaml:"openapiv2"`
 }
 
-var Verbose bool
-var Config OmgConfig
+var (
+	// Verbose is the flag that is configured from the cobra to output some information about what is being executed.
+	Verbose bool
+
+	// Config holds the current configuration that was loaded.
+	Config OmgConfig
+)
 
 func (c *OmgConfig) BufSources() []string {
 	result := make([]string, 0)

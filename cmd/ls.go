@@ -30,8 +30,8 @@ var outputTypeFlag string
 // lsCmd represents the ls command
 var lsCmd = &cobra.Command{
 	Use:   "ls",
-	Short: "List all .proto files using `buf`.",
-	Long:  `List all .proto files using 'buf' and its configuration file.`,
+	Short: "List all .proto files of the project.",
+	Long:  `List all .proto files according to the 'src' definition at the 'omg.yaml'.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ls, err := internal.List(&config.Config)
 		if err != nil {

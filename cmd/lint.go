@@ -13,12 +13,10 @@ var typeFlag string
 var lintCmd = &cobra.Command{
 	Use:   "lint",
 	Short: "Uses buf to run a lint on the configured files",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Long: `For now, there is no way to configure what lints are going to be active while running this command.
+	
+But, it is possible to create a 'buf.yaml' at the root of your project and the buf itself will load it. Check buf
+documentation at https://buf.build.`,
 	Run: func(cmd *cobra.Command, args []string) {
 		ec, err := buf.Lint(typeFlag)
 		if err != nil {

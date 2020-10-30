@@ -16,7 +16,6 @@ import (
 
 var (
 	cfgFile string
-	verbose bool
 )
 
 // rootCmd represents the base command when called without any subcommands
@@ -32,8 +31,6 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		config.Verbose = verbose
-
 		configFile, err := os.Open("omg.yaml")
 		if err != nil {
 			internal.Fatal(1, "error opening omg.yaml: ", err)
@@ -64,7 +61,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $PWD/omg.yaml)")
-	rootCmd.PersistentFlags().BoolVar(&verbose, "verbose", false, "set verbose mode")
+	rootCmd.PersistentFlags().BoolVar(&config.Verbose, "verbose", false, "set verbose mode")
 }
 
 // initConfig reads in config file and ENV variables if set.
