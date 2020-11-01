@@ -37,6 +37,7 @@ func (output *OpenAPIV2Output) BuildArgs() []string {
 	cmd := strings.Builder{}
 	cmd.WriteString("--openapiv2_out=")
 	cmd.WriteString(output.Dir)
+	cmd.WriteString(" ")
 
 	opts := make(map[string]string, 0)
 

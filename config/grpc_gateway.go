@@ -39,6 +39,7 @@ func (output *GRPCGatewayOutput) BuildArgs() []string {
 	}
 	cmd.WriteString(" ")
 	cmd.WriteString(output.Dir)
+	cmd.WriteString(" ")
 
 	opts := make(map[string]string, 0)
 

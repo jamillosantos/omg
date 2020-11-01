@@ -4,6 +4,7 @@ type OmgConfig struct {
 	Src         []string           `yaml:"src"`
 	Includes    []string           `yaml:"includes"`
 	Go          *GoOutput          `yaml:"go"`
+	GoGRPC      *GoGRPCOutput      `yaml:"go_grpc"`
 	GRPCGateway *GRPCGatewayOutput `yaml:"grpc_gateway"`
 	OpenAPIV2   *OpenAPIV2Output   `yaml:"openapiv2"`
 }

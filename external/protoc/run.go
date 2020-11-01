@@ -14,6 +14,9 @@ func Run(omgConfig *config.OmgConfig, file string) *exec.Cmd {
 	if omgConfig.Go != nil {
 		args = append(args, omgConfig.Go.BuildArgs()...)
 	}
+	if omgConfig.GoGRPC != nil {
+		args = append(args, omgConfig.GoGRPC.BuildArgs()...)
+	}
 	if omgConfig.GRPCGateway != nil {
 		args = append(args, omgConfig.GRPCGateway.BuildArgs()...)
 	}
